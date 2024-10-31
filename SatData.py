@@ -16,5 +16,22 @@ class SatData:
     #method to create headers (hardcoding), prepares the outfile, and saves as csv
     def save_as_csv(self,dbns):
         #creating the headers
-        headers = ["DBN", "School Name", "Number of test takers", "Critical Reading Mean", "Math Mean", "Writing Mean"]
+        headers = ["DBN", "School Name", "Number of test takers", "Critical Reading Mean", "Mathematics Mean", "Writing Mean"]
+        #sorting dbns
+        dbns = sorted(dbns)
 
+        #loop that obtains the relevant data and creates the output.csv
+        with open("output.csv", "w") as file:
+            for dbn in dbns:
+                for entry in self._data:
+                    if entry["DBN"] == dbn:
+                        row = [
+                            entry["DBN"],
+                            f'"{entry["School Name"]}"' if ',' in entry["School Name"] else entry["School Name"],
+                            entry.get("Number of test takers", ""),
+                            entry.get("Critical Reading Mean", ""),
+                            entry.get("Mathematics Mean", ""),
+                            entry.get("Writing Mean", "")
+                        ]
+                        file.write(','.join(str(value) for value in row) + '\n')
+                        break
